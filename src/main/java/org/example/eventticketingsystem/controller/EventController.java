@@ -21,14 +21,14 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public ApiResponse<List<Event>> getAllEvent(@RequestParam(defaultValue = "1") Long page, @RequestParam(defaultValue = "10") Long size) {
-        return ResponseUtil.success("retrieved event", eventService.getAllEvent(page, size));
+    public ResponseEntity<ApiResponse<List<Event>>> getAllEvent(@RequestParam(defaultValue = "1") Long page, @RequestParam(defaultValue = "10") Long size) {
+        return ResponseEntity.ok(ResponseUtil.success("retrieved event", eventService.getAllEvent(page, size)));
     }
 
     @GetMapping("/{event-id}")
-    public ApiResponse<Event> getEventById(@PathVariable("event-id") Long id) {
+    public ResponseEntity<ApiResponse<Event>> getEventById(@PathVariable("event-id") Long id) {
         Event event = eventService.getEventById(id);
-        return ResponseUtil.success("retrieved event of id " + event.getEventId(), event);
+        return ResponseEntity.ok(ResponseUtil.success("retrieved event of id " + event.getEventId(), event));
     }
 
     @PostMapping
@@ -37,13 +37,13 @@ public class EventController {
     }
 
     @PutMapping("/{event-id}")
-    public ApiResponse<Event> updateEvent(@Valid @RequestBody EventRequest request, @PathVariable("event-id") Long id) {
-        return ResponseUtil.success("updated event", eventService.updateEvent(request, id));
+    public ResponseEntity<ApiResponse<Event>> updateEvent(@Valid @RequestBody EventRequest request, @PathVariable("event-id") Long id) {
+        return ResponseEntity.ok(ResponseUtil.success("updated event", eventService.updateEvent(request, id)));
     }
 
     @DeleteMapping("/{event-id}")
-    public ApiResponse<Void> createEvent(@PathVariable("event-id") Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteEvent(@PathVariable("event-id") Long id) {
         eventService.deleteEvent(id);
-        return ResponseUtil.deleted("event of id " + id);
+        return ResponseEntity.ok(ResponseUtil.deleted("event of id " + id));
     }
 }

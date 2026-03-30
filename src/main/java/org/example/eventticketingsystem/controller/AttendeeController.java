@@ -22,30 +22,30 @@ public class AttendeeController {
     private final AttendeeService attendeeService;
 
     @GetMapping
-    public ApiResponse<List<Attendee>> getAllAttendee(@RequestParam(defaultValue = "1") Long page, @RequestParam(defaultValue = "10") Long size) {
-        return ResponseUtil.success("retrieved attendee", attendeeService.getAllAttendee(page, size));
+    public ResponseEntity<ApiResponse<List<Attendee>>> getAllAttendee(@RequestParam(defaultValue = "1") Long page, @RequestParam(defaultValue = "10") Long size) {
+        return ResponseEntity.ok(ResponseUtil.success("retrieved attendee", attendeeService.getAllAttendee(page, size)));
     }
 
     @GetMapping("{attendee-id}")
-    public ApiResponse<Attendee> getAttendeeById(@PathVariable("attendee-id") Long id) {
+    public ResponseEntity<ApiResponse<Attendee>> getAttendeeById(@PathVariable("attendee-id") Long id) {
         Attendee attendee = attendeeService.getAttendeeById(id);
-        return ResponseUtil.success("retrieved attendee of id " + attendee.getAttendeeId(), attendee);
+        return ResponseEntity.ok(ResponseUtil.success("retrieved attendee of id " + attendee.getAttendeeId(), attendee));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<Attendee>> createAttendee(@Valid @RequestBody AttendeeRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.success("retrieved venue", attendeeService.createAttendee(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseUtil.success("retrieved attendee", attendeeService.createAttendee(request)));
     }
 
     @PutMapping("{attendee-id}")
-    public ApiResponse<Attendee> updateAttendeeById(@PathVariable("attendee-id") Long id, @Valid @RequestBody AttendeeRequestUpdate request) {
+    public ResponseEntity<ApiResponse<Attendee>> updateAttendeeById(@PathVariable("attendee-id") Long id, @Valid @RequestBody AttendeeRequestUpdate request) {
         Attendee attendee = attendeeService.updateAttendeeById(id, request);
-        return ResponseUtil.success("updated attendee of id " + attendee.getAttendeeId(), attendee);
+        return ResponseEntity.ok(ResponseUtil.success("updated attendee of id " + attendee.getAttendeeId(), attendee));
     }
 
-    @DeleteMapping ("{attendee-id}")
-    public ApiResponse<Void> deleteAttendeeById(@PathVariable("attendee-id") Long id) {
+    @DeleteMapping("{attendee-id}")
+    public ResponseEntity<ApiResponse<Void>> deleteAttendeeById(@PathVariable("attendee-id") Long id) {
         attendeeService.deleteAttendee(id);
-        return ResponseUtil.deleted("attendee of id " + id);
+        return ResponseEntity.ok(ResponseUtil.deleted("attendee of id " + id));
     }
 }
